@@ -2,14 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Image from '@/components/ui/Image';
-import { supabase } from '@/lib/supabase/client';
-import PhaseCard from '../../app/components/PhaseCard';
-import PhaseCard2 from '../../app/components/PhaseCard2';
-import PhaseCard3 from '../../app/components/PhaseCard3';
-import SecurityPromise from '../../app/components/SecurityPromise';
-import ProcessExplanation from '../../app/components/ProcessExplanation';
-import ValueProposition from '../../app/components/ValueProposition';
+import Image from '@/components/ui/Image'
+;
+import { supabase } from '@/integrations/supabase/client';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -30,7 +25,11 @@ export default function Dashboard() {
         .eq('id', user.id)
         .single();
 
-      setClientProfile(data);
+      if (data) {
+        setClientProfile({
+          full_name: data.full_name || 'User'
+        });
+      }
       setLoading(false);
     };
 
@@ -223,18 +222,27 @@ export default function Dashboard() {
                   Phase 1
                 </div>
               </div>
-              <PhaseCard
-                type="checklist"
-                phaseNumber={1}
-                title="Onboarding"
-                description="Provide the blueprint for your agent. Complete these steps to kick off the engineering process. This is where your sales genius becomes algorithmic power. Every response, instinct, and strategic decision you've ever made gets extracted and encoded into your agent's neural pathways."
-                checklist={phase1Checklist}
-                icon={
-                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+                <div className="flex items-center mb-4">
+                  <svg className="w-6 h-6 text-[#ff4f00] mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                   </svg>
-                }
-              />
+                  <h3 className="text-2xl font-bold text-gray-900">Onboarding</h3>
+                </div>
+                <p className="text-gray-600 mb-6">
+                  Provide the blueprint for your agent. Complete these steps to kick off the engineering process. This is where your sales genius becomes algorithmic power.
+                </p>
+                <div className="space-y-4">
+                  {phase1Checklist.map((item, index) => (
+                    <div key={index} className="flex items-start p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                      <div className="text-gray-700">
+                        <h4 className="font-semibold">{item.title}</h4>
+                        <p className="text-sm text-gray-600">{item.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
 
             {/* Phase 2: Engineering & Development */}
@@ -244,24 +252,18 @@ export default function Dashboard() {
                   Phase 2
                 </div>
               </div>
-              <PhaseCard2
-                phaseNumber={2}
-                title="Neural Architecture Engineering"
-                description="Your intelligence undergoes sophisticated transformation. Our proprietary algorithms analyze every nuance of your sales approach, building neural pathways that mirror your decision-making process with unprecedented accuracy."
-                icon={
-                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+                <div className="flex items-center mb-4">
+                  <svg className="w-6 h-6 text-[#ff4f00] mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/>
                     <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/>
-                    <path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/>
-                    <path d="M17.599 6.5a3 3 0 0 0 .399-1.375"/>
-                    <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/>
-                    <path d="M3.477 10.896a4 4 0 0 1 .585-.396"/>
-                    <path d="M19.938 10.5a4 4 0 0 1 .585.396"/>
-                    <path d="M6 18a4 4 0 0 1-1.967-.516"/>
-                    <path d="M19.967 17.484A4 4 0 0 1 18 18"/>
                   </svg>
-                }
-              />
+                  <h3 className="text-2xl font-bold text-gray-900">Neural Architecture Engineering</h3>
+                </div>
+                <p className="text-gray-600">
+                  Your intelligence undergoes sophisticated transformation. Our proprietary algorithms analyze every nuance of your sales approach.
+                </p>
+              </div>
             </div>
 
             {/* Phase 3: Deployment & Revenue Generation */}
@@ -271,40 +273,30 @@ export default function Dashboard() {
                   Phase 3
                 </div>
               </div>
-              <PhaseCard3
-                phaseNumber={3}
-                title="Autonomous Revenue Operations"
-                description="Upon successful completion of the engineering phase, your agent will be deployed and will begin actively working for your business. It will be designed to learn and improve with every interaction. At this point, your role will shift to a simple, powerful feedback loop: you will monitor its conversations and share your insights."
-                icon={
-                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+                <div className="flex items-center mb-4">
+                  <svg className="w-6 h-6 text-[#ff4f00] mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="12" cy="12" r="10"/>
                     <circle cx="12" cy="12" r="6"/>
                     <circle cx="12" cy="12" r="2"/>
                   </svg>
-                }
-                bestPractices={[
-                  {
-                    label: (
-                      <>
-                        <strong>Keep Agent Smart:</strong> To update your agent's knowledge, please email us first.
-                        Use a clear subject line like "Updating Data Source", "Updating Tool", or "Updating Fine-Tune DNA" so we can process it efficiently.
-                      </>
-                    ),
-                  },
-                  {
-                    label: (
-                      <>
-                        <strong>Share Insights:</strong> See a conversation that could be improved?{' '}
-                        <a href="mailto:hi@modernmarketinghouse.com" className="text-[#ff4f00] hover:underline">
-                          Email us
-                        </a>
-                        .
-                        Your feedback is the key to unlocking its full potential.
-                      </>
-                    ),
-                  },
-                ]}
-              />
+                  <h3 className="text-2xl font-bold text-gray-900">Autonomous Revenue Operations</h3>
+                </div>
+                <p className="text-gray-600 mb-6">
+                  Upon successful completion of the engineering phase, your agent will be deployed and will begin actively working for your business.
+                </p>
+                <div className="space-y-3">
+                  <p className="text-sm text-gray-700">
+                    <strong>Keep Agent Smart:</strong> To update your agent's knowledge, please email us first.
+                  </p>
+                  <p className="text-sm text-gray-700">
+                    <strong>Share Insights:</strong> See a conversation that could be improved?{' '}
+                    <a href="mailto:hi@modernmarketinghouse.com" className="text-[#ff4f00] hover:underline">
+                      Email us
+                    </a>.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -320,19 +312,6 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-
-      {/* Process Explanation Section */}
-      <div className="py-8">
-        <ProcessExplanation />
-      </div>
-
-      {/* Security Promise Section */}
-      <div className="py-16" style={{backgroundColor: '#f0f0f2'}}>
-        <SecurityPromise />
-      </div>
-
-      {/* Value Proposition Section */}
-      <ValueProposition />
     </div>
   );
 }

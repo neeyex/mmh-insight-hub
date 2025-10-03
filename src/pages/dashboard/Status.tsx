@@ -3,8 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Image from '@/components/ui/Image';
-import { Link } from 'react-router-dom';
-import { supabase } from '@/lib/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 
 const milestones = [
   {
@@ -92,7 +91,12 @@ export default function Status() {
         .eq('client_id', user.id)
         .single();
 
-      setAgentStatus(data);
+      if (data) {
+        setAgentStatus({
+          engineering_phase: data.engineering_phase || 'Blueprint & Strategy',
+          engineering_status: data.engineering_status || 'Waiting for You'
+        });
+      }
       setLoading(false);
     };
 

@@ -1,6 +1,5 @@
 // src/pages/dashboard/Billing.tsx - Converted to Vite/React Router
 
-import { Link } from 'react-router-dom';
 import Image from '@/components/ui/Image';
 
 // This is the dedicated page for billing management.

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Image from '@/components/ui/Image';
-import { supabase } from '@/lib/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 
 // This defines the structure of a single lead report item.
 // Using TypeScript interfaces like this is a best practice for clarity.
@@ -59,16 +59,9 @@ export default function Analytics() {
         return;
       }
 
-      // Fetch all lead reports for the currently logged-in user.
-      const { data, error } = await supabase
-        .from('monthly_lead_report')
-        .select('*')
-        .eq('client_id', user.id)
-        .order('reporting_month', { ascending: false }); // Show the newest reports first
-
-      if (!error && data) {
-        setLeadReports(data);
-      }
+      // Note: Analytics features are coming soon
+      // The monthly_lead_report table doesn't exist yet
+      setLeadReports([]);
       setLoading(false);
     };
 

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Image from '@/components/ui/Image';
-import { supabase } from '@/lib/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 
 // Define the structure of a support ticket for TypeScript
 type Ticket = {
@@ -10,7 +10,7 @@ type Ticket = {
   ticket_id: number;
   subject: string;
   status: string;
-  updated_at: string;
+  updated_at: string | null;
 };
 
 // This is the dedicated page for the Support & Ticketing System.
@@ -206,7 +206,7 @@ export default function Support() {
                           </span>
                         </td>
                         <td className="p-3 text-muted-foreground text-right text-sm">
-                          {new Date(ticket.updated_at).toLocaleDateString()}
+                          {ticket.updated_at ? new Date(ticket.updated_at).toLocaleDateString() : 'N/A'}
                         </td>
                       </tr>
                     ))}

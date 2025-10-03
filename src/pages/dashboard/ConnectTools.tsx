@@ -1,9 +1,9 @@
 // src/pages/dashboard/ConnectTools.tsx - Converted to Vite/React Router
 
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Image from '@/components/ui/Image';
-import { supabase } from '@/lib/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 
 // This is our new "smart" helper function for this specific step.
 // It takes the plan name and the client's unique ID, and returns the correct, personalized Tally form URL.

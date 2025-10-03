@@ -1,10 +1,9 @@
 // src/pages/dashboard/Deployment.tsx - Converted to Vite/React Router
 
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Image from '@/components/ui/Image';
-import { Link } from 'react-router-dom';
-import { supabase } from '@/lib/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 
 // This is a new, reusable component for displaying the code snippet.
 const CodeSnippet = ({ snippet }: { snippet: string }) => {
@@ -41,7 +40,13 @@ export default function Deployment() {
         .eq('client_id', user.id)
         .single();
 
-      setAgentStatus(data);
+      if (data) {
+        setAgentStatus({
+          engineering_phase: data.engineering_phase || 'Blueprint & Strategy',
+          engineering_status: data.engineering_status || 'Waiting for You',
+          deployment_details: data.deployment_details || null
+        });
+      }
       setLoading(false);
     };
 

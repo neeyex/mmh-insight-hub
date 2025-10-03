@@ -1,9 +1,9 @@
 // src/pages/dashboard/DataSources.tsx - Converted to Vite/React Router
 
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Image from '@/components/ui/Image';
-import { supabase } from '@/lib/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 
 // This helper function gets the Tally URL and securely adds the client's ID.
 const getTallyFormUrl = (userId: string | undefined): string => {

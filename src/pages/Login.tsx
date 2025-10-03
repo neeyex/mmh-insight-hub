@@ -1,7 +1,7 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Image from '@/components/ui/Image';
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');

@@ -3,29 +3,25 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Image from '@/components/ui/Image';
-import { supabase } from '@/lib/supabase/client';
-// CORRECTED: Import paths now point to the correct dashboard/plan directory
-import HustlerPlan from '@/app/dashboard/plan/HustlerPlan';
-import GrowthPlan from '@/app/dashboard/plan/GrowthPlan';
-import ProfessionalPlan from '@/app/dashboard/plan/ProfessionalPlan';
-import EnterprisePlan from '@/app/dashboard/plan/EnterprisePlan';
+import { supabase } from '@/integrations/supabase/client';
 
-// This helper component is the "brain" of the page.
+// Plan details component - displays plan information
 const PlanDetails = ({ planName }: { planName: string | undefined }) => {
-  if (planName?.toLowerCase().includes('hustler')) {
-    return <HustlerPlan />;
-  }
-  if (planName?.toLowerCase().includes('growth')) {
-    return <GrowthPlan />;
-  }
-  if (planName?.toLowerCase().includes('professional')) {
-    return <ProfessionalPlan />;
-  }
-  if (planName?.toLowerCase().includes('enterprise')) {
-    return <EnterprisePlan />;
+  if (!planName) {
+    return <div className="text-center p-8 bg-card border border-border rounded-lg">Could not load your plan details. Please contact support.</div>;
   }
 
-  return <div className="text-center p-8 bg-gray-100 rounded-lg">Could not load your plan details. Please contact support.</div>;
+  return (
+    <div className="bg-card border border-border rounded-2xl p-8 shadow-sm">
+      <h2 className="text-2xl font-bold text-foreground mb-4">Your Active Plan</h2>
+      <p className="text-lg text-muted-foreground mb-6">
+        You are currently subscribed to the <strong>{planName}</strong> plan.
+      </p>
+      <p className="text-muted-foreground">
+        For more details about your plan features and benefits, please contact support or visit your billing portal.
+      </p>
+    </div>
+  );
 };
 
 export default function Plan() {

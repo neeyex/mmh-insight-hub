@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Image from './ui/Image';
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 import type { User } from '@supabase/supabase-js';
 
 // Import Lucide React icons for a professional and consistent icon set
@@ -79,7 +79,10 @@ const Sidebar = () => {
         if (error) {
           console.error('Error fetching client profile:', error);
         } else if (data) {
-          setProfile(data);
+          setProfile({
+            full_name: data.full_name || 'User',
+            plan_name: data.plan_name
+          });
         }
       }
       setIsLoadingProfile(false);

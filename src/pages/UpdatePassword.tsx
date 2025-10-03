@@ -1,7 +1,7 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Image from '@/components/ui/Image';
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function UpdatePasswordPage() {
   const navigate = useNavigate();
