@@ -92,8 +92,9 @@ serve(async (req) => {
     });
 
   } catch (error) {
-    console.error("Webhook Error:", error.message);
-    return new Response(JSON.stringify({ error: error.message }), {
+    const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+    console.error("Webhook Error:", errorMessage);
+    return new Response(JSON.stringify({ error: errorMessage }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 400,
     });

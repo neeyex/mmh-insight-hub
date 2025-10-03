@@ -55,8 +55,9 @@ serve(async (req) => {
       if (authError) throw authError;
       const newUserId = authData.user.id;
 
-      const { error: resetError } = await supabaseAdmin.auth.admin.resetPasswordForEmail(email, {
-        redirectTo: 'http://localhost:3000/update-password',
+      // Send password reset email using the new API
+      const { error: resetError } = await supabaseAdmin.auth.resetPasswordForEmail(email, {
+        redirectTo: `${Deno.env.get('SUPABASE_URL')}/auth/v1/verify?redirect_to=http://localhost:8080/update-password`,
       });
       if (resetError) throw resetError;
 
@@ -94,8 +95,9 @@ serve(async (req) => {
     })
 
   } catch (error) {
-    console.error('Paddle Webhook Error:', error.message)
-    return new Response(JSON.stringify({ error: error.message }), {
+    const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+    console.error('Paddle Webhook Error:', errorMessage)
+    return new Response(JSON.stringify({ error: errorMessage }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       status: 400,
     })

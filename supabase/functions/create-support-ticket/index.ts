@@ -3,7 +3,7 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.8";
 import { corsHeaders } from "../_shared/cors.ts";
-import { sendAdminNotification } from "../_shared/sendgrid-client.ts";
+import { sendAdminNotification, sendClientNotification } from "../_shared/sendgrid-client.ts";
 
 // This is the main function that runs when a client submits a new support ticket.
 serve(async (req) => {
@@ -74,8 +74,8 @@ serve(async (req) => {
       <p>Best,<br>The Modern Marketing House Team</p>
     `;
 
-    // We'll re-use our powerful admin notification helper, but send it to the client.
-    await sendAdminNotification(clientEmailSubject, clientEmailBody, clientEmail || '');
+    // Use sendClientNotification for client emails
+    await sendClientNotification(clientEmail || '', clientEmailSubject, clientEmailBody);
 
 
     // 3. Send an alert email to you, the admin.
@@ -104,8 +104,9 @@ serve(async (req) => {
 
   } catch (error) {
     // If anything goes wrong, log the error and return an error response.
-    console.error("Create Ticket Error:", error.message);
-    return new Response(JSON.stringify({ error: error.message }), {
+    const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
+    console.error("Create Ticket Error:", errorMessage);
+    return new Response(JSON.stringify({ error: errorMessage }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
       status: 400,
     });
