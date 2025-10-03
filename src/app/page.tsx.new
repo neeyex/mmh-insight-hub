@@ -1,0 +1,72 @@
+import { redirect } from 'next/navigation';
+import { createSupabaseServerClient } from '@/lib/supabase/server';
+import Image from "next/image";
+import Link from "next/link";
+
+export default async function Home() {
+  const supabase = await createSupabaseServerClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  // If user is logged in, redirect to dashboard
+  if (user) {
+    redirect('/dashboard');
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
+        <div className="text-center">
+          <Image
+            src="https://assets.modernmarketinghouse.com/Modern-Marketing-House-Banner.svg"
+            alt="Modern Marketing House"
+            width={200}
+            height={80}
+            priority
+            className="mx-auto mb-8"
+          />
+          
+          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+            AI-Powered Sales Agents
+          </h1>
+          
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-12">
+            Create your custom AI sales agent that understands your business, products, and customer needs.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/login"
+              className="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-primary/90 md:py-4 md:text-lg md:px-10"
+            >
+              Get Started
+            </Link>
+            
+            <Link
+              href="/login"
+              className="inline-flex items-center px-8 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10"
+            >
+              Learn More
+            </Link>
+          </div>
+        </div>
+
+        <div className="mt-20 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Custom Training</h3>
+            <p className="text-gray-600">Train your AI agent with your specific product knowledge and sales processes.</p>
+          </div>
+          
+          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">24/7 Availability</h3>
+            <p className="text-gray-600">Your AI sales agent is always ready to engage with customers and generate leads.</p>
+          </div>
+          
+          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Analytics & Insights</h3>
+            <p className="text-gray-600">Get detailed insights into customer interactions and sales performance.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
